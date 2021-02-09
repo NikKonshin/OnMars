@@ -12,10 +12,10 @@ import kotlinx.android.synthetic.main.item_rovers.view.*
 
 class RoversRVAdapter(
     private val presenter: IRoverListPresenter,
-) : RecyclerView.Adapter<RoversRVAdapter.ViewHolder>(){
+) : RecyclerView.Adapter<RoversRVAdapter.ViewHolder>() {
     inner class ViewHolder(override val containerView: View) :
-            RecyclerView.ViewHolder(containerView),
-            LayoutContainer, RoverItemView{
+        RecyclerView.ViewHolder(containerView),
+        LayoutContainer, RoverItemView {
 
         override fun setName(name: String) = with(containerView) {
             button_rover.text = name
@@ -25,12 +25,14 @@ class RoversRVAdapter(
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)=
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_rovers, parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.pos = position
-        holder.containerView.setOnClickListener { presenter.itemClickListener?.invoke(holder) }
+        with(holder.containerView) {
+            button_rover.setOnClickListener { presenter.itemClickListener?.invoke(holder) }
+        }
         presenter.bindView(holder)
     }
 

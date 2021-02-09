@@ -1,16 +1,45 @@
 package com.example.onmars.mvp.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onmars.R
+import com.example.onmars.mvp.App
+import com.example.onmars.mvp.model.entity.Camera
+import com.example.onmars.mvp.presenter.PhotosPresenter
+import com.example.onmars.mvp.ui.BackButtonListener
+import com.example.onmars.mvp.ui.adapter.PhotosRVAdapter
+import com.example.onmars.mvp.view.PhotosView
+import kotlinx.android.synthetic.main.fragment_photos.*
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 
-class PhotosFragment : Fragment() {
+class PhotosFragment : MvpAppCompatFragment(), PhotosView, BackButtonListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        private const val CAMERA_ARG = "camera"
+        private const val ROVER_NAME_ARG = "rover_name"
+        private const val DATE_ARG = "date"
+        fun newInstance(roverName: String, camera: Camera, date: String) = PhotosFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(CAMERA_ARG, camera)
+                putString(ROVER_NAME_ARG, roverName)
+                putString(DATE_ARG, date)
+            }
+
+        }
+    }
+
+    private val presenter by moxyPresenter {
+        val camera = arguments?.getParcelable<Camera>(CAMERA_ARG) as Camera
+        val roverName = arguments?.getString(ROVER_NAME_ARG)
+        val date = arguments?.getString(DATE_ARG)
+
+        PhotosPresenter(roverName ?: "", camera, date ?: "").apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     override fun onCreateView(
@@ -20,7 +49,19 @@ class PhotosFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_photos, container, false)
     }
 
-    companion object {
+    private var adapter: PhotosRVAdapter? = null
 
+    override fun init() {
+        rv_rovers_fragments_photos.layoutManager = LinearLayoutManager(context)
+        adapter = PhotosRVAdapter(presenter.photosListPresenter).apply {
+            App.instance.appComponent.inject(this)
+        }
+        rv_rovers_fragments_photos.adapter = adapter
     }
+
+    override fun updateList() {
+        adapter?.notifyDataSetChanged()
+    }
+
+    override fun backPressed(): Boolean = presenter.backPressed()
 }

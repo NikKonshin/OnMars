@@ -31,9 +31,8 @@ class RoversFragment : MvpAppCompatFragment(), RoversView, BackButtonListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_rovers, container, false)
-    }
+    ) = View.inflate(context, R.layout.fragment_rovers, null)
+
 
     override fun init() {
         rv_rovers.layoutManager = LinearLayoutManager(context)

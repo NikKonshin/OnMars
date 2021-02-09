@@ -6,6 +6,7 @@ import com.example.onmars.mvp.model.repo.IRoversRepo
 import com.example.onmars.mvp.presenter.list.IRoverListPresenter
 import com.example.onmars.mvp.view.RoversView
 import com.example.onmars.mvp.view.list.RoverItemView
+import com.example.onmars.navigation.Screens
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
@@ -41,8 +42,9 @@ class RoversPresenter() : MvpPresenter<RoversView>() {
         super.onFirstViewAttach()
         viewState.init()
         loadData()
+
         roversListPresenter.itemClickListener = { itemView ->
-            Log.v(TAG, "${itemView.pos}")
+            router.navigateTo(Screens.RoverScreen(roversListPresenter.rovers[itemView.pos]))
         }
     }
 
