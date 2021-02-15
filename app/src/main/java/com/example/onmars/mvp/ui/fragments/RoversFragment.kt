@@ -31,7 +31,7 @@ class RoversFragment : MvpAppCompatFragment(), RoversView, BackButtonListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = View.inflate(context, R.layout.fragment_rovers, null)
+    ) = View.inflate(context,R.layout.fragment_rovers, null)
 
 
     override fun init() {

@@ -88,7 +88,7 @@ class RoverFragment : MvpAppCompatFragment(), RoverView, BackButtonListener {
         date_picker_rover_fragment.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
             println("DATE: $year-$monthOfYear-$dayOfMonth")
             date = "$year-$monthOfYear-$dayOfMonth"
-            presenter.getDate(date)
+            presenter.setDate(date)
         }
 
     }

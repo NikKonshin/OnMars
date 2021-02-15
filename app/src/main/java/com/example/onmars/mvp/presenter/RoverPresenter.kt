@@ -60,9 +60,8 @@ class RoverPresenter(
 
     }
 
-    fun getDate(newDate: String) {
+    fun setDate(newDate: String) {
         date = newDate
-
     }
 
     private fun loadData() {
@@ -78,7 +77,6 @@ class RoverPresenter(
         cameraListPresenter.cameras.clear()
         cameraListPresenter.cameras.addAll(rover.cameras)
         viewState.updateList()
-
     }
 
     fun backPressed(): Boolean {
