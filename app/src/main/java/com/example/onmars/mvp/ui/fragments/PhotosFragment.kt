@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onmars.MainActivity
 import com.example.onmars.R
 import com.example.onmars.mvp.App
 import com.example.onmars.mvp.model.entity.Camera
+import com.example.onmars.mvp.model.entity.Rover
+import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.presenter.PhotosPresenter
 import com.example.onmars.mvp.ui.BackButtonListener
 import com.example.onmars.mvp.ui.adapter.PhotosRVAdapter
@@ -22,11 +25,11 @@ class PhotosFragment : MvpAppCompatFragment(), PhotosView, BackButtonListener {
         private const val CAMERA_ARG = "camera"
         private const val ROVER_NAME_ARG = "rover_name"
         private const val DATE_ARG = "date"
-        fun newInstance(roverName: String, camera: Camera, date: String) = PhotosFragment().apply {
+        fun newInstance(rover: Rover, camera: Camera, date: Date) = PhotosFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(CAMERA_ARG, camera)
-                putString(ROVER_NAME_ARG, roverName)
-                putString(DATE_ARG, date)
+                putParcelable(ROVER_NAME_ARG, rover)
+                putParcelable(DATE_ARG, date)
             }
 
         }
@@ -34,10 +37,9 @@ class PhotosFragment : MvpAppCompatFragment(), PhotosView, BackButtonListener {
 
     private val presenter by moxyPresenter {
         val camera = arguments?.getParcelable<Camera>(CAMERA_ARG) as Camera
-        val roverName = arguments?.getString(ROVER_NAME_ARG)
-        val date = arguments?.getString(DATE_ARG)
-
-        PhotosPresenter(roverName ?: "", camera, date ?: "").apply {
+        val rover = arguments?.getParcelable<Rover>(ROVER_NAME_ARG)
+        val date = arguments?.getParcelable<Date>(DATE_ARG)
+        PhotosPresenter(rover!!, camera, date ?: Date()).apply {
             App.instance.appComponent.inject(this)
         }
     }
@@ -52,6 +54,12 @@ class PhotosFragment : MvpAppCompatFragment(), PhotosView, BackButtonListener {
     private var adapter: PhotosRVAdapter? = null
 
     override fun init() {
+        val activity = activity as MainActivity
+        activity.setSupportActionBar(toolbar_photos_fragment)
+        val bar = activity.supportActionBar
+        bar?.setDisplayShowTitleEnabled(false)
+        bar?.setDisplayHomeAsUpEnabled(true)
+        bar?.setDisplayShowHomeEnabled(true)
         rv_rovers_fragments_photos.layoutManager = LinearLayoutManager(context)
         adapter = PhotosRVAdapter(presenter.photosListPresenter).apply {
             App.instance.appComponent.inject(this)

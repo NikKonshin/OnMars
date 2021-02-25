@@ -22,7 +22,6 @@ class RoversRVAdapter(
         }
 
         override var pos = -1
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

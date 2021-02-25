@@ -2,6 +2,7 @@ package com.example.onmars.mvp.presenter
 
 import android.util.Log
 import com.example.onmars.mvp.model.entity.Rover
+import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.model.repo.IRoversRepo
 import com.example.onmars.mvp.presenter.list.IRoverListPresenter
 import com.example.onmars.mvp.view.RoversView
@@ -24,6 +25,8 @@ class RoversPresenter() : MvpPresenter<RoversView>() {
     @Inject
     lateinit var mainThreadSchedulers: Scheduler
 
+    private var date = Date()
+
     class RoversListPresenter : IRoverListPresenter {
         val rovers = mutableListOf<Rover>()
         override var itemClickListener: ((RoverItemView) -> Unit)? = null
@@ -41,10 +44,11 @@ class RoversPresenter() : MvpPresenter<RoversView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
+        viewState.getDate()
         loadData()
 
         roversListPresenter.itemClickListener = { itemView ->
-            router.navigateTo(Screens.RoverScreen(roversListPresenter.rovers[itemView.pos]))
+            router.navigateTo(Screens.RoverScreen(roversListPresenter.rovers[itemView.pos], date))
         }
     }
 
@@ -58,6 +62,10 @@ class RoversPresenter() : MvpPresenter<RoversView>() {
             }, {
                 Log.v(TAG, "Error: ${it.message}")
             })
+    }
+
+    fun setDate(newDate: Date){
+        date = newDate
     }
 
     fun backPressed(): Boolean {

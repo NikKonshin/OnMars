@@ -4,7 +4,7 @@
     <string name="tv_rovers_str">Марсоходы</string>
     <string name="launch_date">Дата запуска:</string>
     <string name="landing_date">Дата приземления:</string>
-    <string name="status">Статус</string>
+    <string name="status">Статус:</string>
     <string name="max_sol">Макс. марсианских солнц:</string>
     <string name="max_date">Максимальная дата:</string>
     <string name="total_photos">Количество фото:</string>

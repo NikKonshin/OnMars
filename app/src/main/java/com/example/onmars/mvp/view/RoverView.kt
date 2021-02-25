@@ -1,5 +1,6 @@
 package com.example.onmars.mvp.view
 
+import com.example.onmars.mvp.model.entity.date.Date
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.StateStrategyType
@@ -15,6 +16,9 @@ interface RoverView: MvpView {
     fun setMaxSol(sol: Int)
     fun setMaxDate(text: String)
     fun setTotalPhoto(value: Int)
-    fun getDate()
-
+    fun initGetPicker(date: Date)
+    fun setRoverPhotoCuriosity()
+    fun setRoverPhotoSpirit()
+    fun setRoverPhotoOpportunity()
+    fun setRoverPhotoPerseverance()
 }

@@ -3,10 +3,13 @@ package com.example.onmars.mvp.presenter
 import android.util.Log
 import com.example.onmars.mvp.model.entity.Camera
 import com.example.onmars.mvp.model.entity.Photo
+import com.example.onmars.mvp.model.entity.Rover
+import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.model.repo.IPhotoRepo
 import com.example.onmars.mvp.presenter.list.IPhotosListPresenter
 import com.example.onmars.mvp.view.PhotosView
 import com.example.onmars.mvp.view.list.PhotosItemView
+import com.example.onmars.navigation.Screens
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
@@ -15,9 +18,9 @@ import javax.inject.Inject
 private const val TAG = "PhotosPresenter"
 
 class PhotosPresenter(
-    private val roverName: String,
+    private val rover: Rover,
     private val camera: Camera,
-    private val date: String,
+    private val date: Date,
 ) : MvpPresenter<PhotosView>() {
 
     @Inject
@@ -54,20 +57,23 @@ class PhotosPresenter(
     }
 
     private fun loadData() {
-        photosRepo.getPhotosFromCameraDate(camera.name, date, roverName)
+        photosRepo.getPhotosFromCameraDate(camera, date.dateString, rover)
             .observeOn(mainThreadScheduler)
             .subscribe({
-                photosListPresenter.photos.clear()
-                photosListPresenter.photos.addAll(it.photos)
-                viewState.updateList()
+                if (it.photos.isEmpty()) {
+                    router.replaceScreen(Screens.IfEmptyScreen())
+                } else {
+                    photosListPresenter.photos.clear()
+                    photosListPresenter.photos.addAll(it.photos)
+                    viewState.updateList()
+                }
             }, {
                 println("Error: ${it.message}")
             })
     }
 
     fun backPressed(): Boolean {
-        router.exit()
+        router.backTo(Screens.RoverScreen(rover, date))
         return true
     }
-
 }

@@ -2,6 +2,7 @@ package com.example.onmars.mvp.presenter
 
 import com.example.onmars.mvp.model.entity.Camera
 import com.example.onmars.mvp.model.entity.Rover
+import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.model.repo.IRoverData
 import com.example.onmars.mvp.presenter.list.ICameraListPresenter
 import com.example.onmars.mvp.view.RoverView
@@ -12,10 +13,15 @@ import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
-private const val TAG = "RoverPresenter"
+private const val SPIRIT = "spirit"
+private const val CURIOSITY = "curiosity"
+private const val OPPORTUNITY = "opportunity"
+private const val PERSEVERANCE = "perseverance"
+
 
 class RoverPresenter(
-    private val rover: Rover
+    private val rover: Rover,
+    private var date: Date
 ) : MvpPresenter<RoverView>() {
 
     @Inject
@@ -26,8 +32,6 @@ class RoverPresenter(
 
     @Inject
     lateinit var roverData: IRoverData
-
-    private var date: String = ""
 
     class CamerasListPresenter : ICameraListPresenter {
         val cameras = mutableListOf<Camera>()
@@ -51,20 +55,20 @@ class RoverPresenter(
         cameraListPresenter.itemClickListener = {
             router.navigateTo(
                 Screens.PhotoScreen(
-                    rover.name,
+                    rover,
                     cameraListPresenter.cameras[it.pos],
                     date
                 )
             )
         }
-
     }
 
-    fun setDate(newDate: String) {
+    fun setDate(newDate: Date) {
         date = newDate
     }
 
     private fun loadData() {
+        initRoverPhoto()
         viewState.setName(rover.name ?: "")
         viewState.setLandingDate(rover.landingDate ?: "")
         viewState.setLaunchDate(rover.launchDate ?: "")
@@ -72,7 +76,7 @@ class RoverPresenter(
         viewState.setMaxSol(rover.maxSol ?: 0)
         viewState.setStatus(rover.status ?: "")
         viewState.setTotalPhoto(rover.totalPhotos ?: 0)
-        viewState.getDate()
+        viewState.initGetPicker(date)
 
         cameraListPresenter.cameras.clear()
         cameraListPresenter.cameras.addAll(rover.cameras)
@@ -82,5 +86,15 @@ class RoverPresenter(
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    private fun initRoverPhoto() {
+        when (rover.name.toLowerCase()) {
+            SPIRIT -> viewState.setRoverPhotoSpirit()
+            CURIOSITY -> viewState.setRoverPhotoCuriosity()
+            OPPORTUNITY -> viewState.setRoverPhotoOpportunity()
+            PERSEVERANCE -> viewState.setRoverPhotoPerseverance()
+
+        }
     }
 }
