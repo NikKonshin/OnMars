@@ -9,6 +9,7 @@ import com.example.onmars.mvp.model.entity.room.Database
 import com.example.onmars.mvp.model.entity.room.RoomPhoto
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class RoomPhotoCache(private val db: Database) : IPhotoCache {
     override fun insert(photos: Photos, camera: Camera, date: String): Completable =
@@ -23,7 +24,7 @@ class RoomPhotoCache(private val db: Database) : IPhotoCache {
                 )
             }
             db.photoDao.insert(roomPhoto)
-        }
+        }.subscribeOn(Schedulers.io())
 
     override fun getAllPhotoFromCamera(rover: Rover, camera: Camera, date: String): Single<Photos> =
         Single.fromCallable {
@@ -37,5 +38,5 @@ class RoomPhotoCache(private val db: Database) : IPhotoCache {
                         rover
                     )
                 })
-        }
+        }.subscribeOn(Schedulers.io())
 }

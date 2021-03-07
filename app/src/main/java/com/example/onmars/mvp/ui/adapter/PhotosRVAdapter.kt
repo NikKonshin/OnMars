@@ -35,6 +35,7 @@ class PhotosRVAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.pos = position
+        holder.containerView.setOnClickListener { presenter.itemClickListener?.invoke(holder) }
         presenter.bindView(holder)
     }
 

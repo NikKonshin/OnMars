@@ -9,4 +9,10 @@
     <string name="max_date">Максимальная дата:</string>
     <string name="total_photos">Количество фото:</string>
     <string name="main_menu_back">Назад</string>
+    <string name="button_home">Главная</string>
+    <string name="button_favorites">Избранное</string>
+    <string name="favorites">favorites</string>
+    <string name="share">Поделиться</string>
+    <string name="save">Сохранить</string>
+    <string name="empty_tv_if_empty_favorites">Пока что тут нет фото.\\n\\n\\nСначала добавьте фото.</string>
 </resources>

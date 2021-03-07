@@ -1,0 +1,67 @@
+package com.example.onmars.mvp.ui.fragments
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.onmars.R
+import com.example.onmars.mvp.App
+import com.example.onmars.mvp.presenter.FavoritesPhotosPresenter
+import com.example.onmars.mvp.ui.BackButtonListener
+import com.example.onmars.mvp.ui.adapter.FavoritesPhotoRVAdapter
+import com.example.onmars.mvp.view.FavoritesPhotoView
+import kotlinx.android.synthetic.main.fragment_favorites_photo.*
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
+
+class FavoritesPhotoFragment : MvpAppCompatFragment(), FavoritesPhotoView, BackButtonListener {
+
+    private val presenter by moxyPresenter {
+        FavoritesPhotosPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_favorites_photo, container, false)
+    }
+
+    companion object {
+        fun newInstance() =
+            FavoritesPhotoFragment()
+    }
+
+    private var adapter: FavoritesPhotoRVAdapter? = null
+
+    override fun init() {
+        adapter = FavoritesPhotoRVAdapter(presenter.favoritesPhotosListPresenter).apply {
+            App.instance.appComponent.inject(this)
+        }
+        rv_photos_fragment_favorites_photos.layoutManager = LinearLayoutManager(context)
+        rv_photos_fragment_favorites_photos.adapter = adapter
+
+        rv_photos_fragment_favorites_photos.scrollToPosition(presenter.getPosition() ?: 0)
+
+        rv_photos_fragment_favorites_photos.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position =
+                    ((rv_photos_fragment_favorites_photos.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition())
+                presenter.saveScroll(position)
+            }
+        })
+    }
+
+    override fun updateList() {
+        adapter?.notifyDataSetChanged()
+    }
+
+    override fun backPressed(): Boolean =
+        presenter.backPressed()
+}

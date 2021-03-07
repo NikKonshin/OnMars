@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onmars.MainActivity
 import com.example.onmars.R
 import com.example.onmars.mvp.App
 import com.example.onmars.mvp.model.entity.Rover
 import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.presenter.RoverPresenter
 import com.example.onmars.mvp.ui.BackButtonListener
+import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.mvp.ui.adapter.CamerasRVAdapter
 import com.example.onmars.mvp.view.RoverView
 import kotlinx.android.synthetic.main.fragment_rover.*
@@ -103,7 +103,9 @@ class RoverFragment : MvpAppCompatFragment(), RoverView, BackButtonListener {
         tv_total_photos_value_rover_fragment.text = value.toString()
     }
 
-    override fun initGetPicker(date: Date) {
+    override fun initGetPicker(date: Date, maxDate: Long, minDate: Long) {
+        date_picker_rover_fragment.maxDate = maxDate
+        date_picker_rover_fragment.minDate = minDate
         date_picker_rover_fragment.init(
             date.year,
             date.month,

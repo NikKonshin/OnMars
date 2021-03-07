@@ -1,11 +1,12 @@
-package com.example.onmars
+package com.example.onmars.mvp.ui
 
 import android.os.Bundle
 import android.view.MenuItem
+import com.example.onmars.R
 import com.example.onmars.mvp.App
 import com.example.onmars.mvp.presenter.MainPresenter
-import com.example.onmars.mvp.ui.BackButtonListener
 import com.example.onmars.mvp.view.MainView
+import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import ru.terrakok.cicerone.NavigatorHolder
@@ -55,5 +56,15 @@ class MainActivity : MvpAppCompatActivity(), MainView {
             }
         }
         presenter.backClicked()
+    }
+
+    override fun init() {
+        bnv_main_activity.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.homeId -> presenter.replaceFragmentToRovers()
+                R.id.favoritesId -> presenter.replaceFragmentToFavorites()
+                else -> false
+            }
+        }
     }
 }

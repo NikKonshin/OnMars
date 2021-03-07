@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onmars.MainActivity
+import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.R
 import com.example.onmars.mvp.App
 import com.example.onmars.mvp.model.entity.date.Date

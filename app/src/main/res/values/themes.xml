@@ -34,13 +34,9 @@
         <item name="android:background">@color/grey</item>
         <item name="colorPrimary">@color/grey</item>
         <item name="android:textColor">@color/black_transparent</item>
-
-
-
-
-
-
-
-
+        <item name="colorBackgroundFloating">@color/grey</item>
+        <item name="colorControlHighlight">@color/grey</item>
+        <item name="colorControlNormal">@color/grey</item>
+        <item name="android:headerBackground">@color/grey</item>
     </style>
 </resources>

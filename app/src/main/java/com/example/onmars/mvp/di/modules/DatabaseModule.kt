@@ -2,9 +2,11 @@ package com.example.onmars.mvp.di.modules
 
 import androidx.room.Room
 import com.example.onmars.mvp.App
+import com.example.onmars.mvp.model.cache.IFavoritesPhotoCache
 import com.example.onmars.mvp.model.cache.IPhotoCache
 import com.example.onmars.mvp.model.cache.IRoverCache
 import com.example.onmars.mvp.model.cache.IRoversCache
+import com.example.onmars.mvp.model.cache.room.RoomFavoritesPhotoCache
 import com.example.onmars.mvp.model.cache.room.RoomPhotoCache
 import com.example.onmars.mvp.model.cache.room.RoomRoverCache
 import com.example.onmars.mvp.model.cache.room.RoomRoversCache
@@ -38,4 +40,9 @@ class DatabaseModule {
     @Provides
     fun photoCache(database: Database): IPhotoCache =
         RoomPhotoCache(database)
+
+    @Singleton
+    @Provides
+    fun favoritesCache(database: Database): IFavoritesPhotoCache =
+        RoomFavoritesPhotoCache(database)
 }

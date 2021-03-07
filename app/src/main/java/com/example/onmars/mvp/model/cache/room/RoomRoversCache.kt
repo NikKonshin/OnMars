@@ -60,7 +60,7 @@ class RoomRoversCache(private val db: Database) : IRoversCache {
                     roomRover.maxSol,
                     roomRover.maxDate,
                     roomRover.totalPhotos,
-                    cameras
+                    cameras.filter { it.roverId == roomRover.id }
                 )
             }
         )

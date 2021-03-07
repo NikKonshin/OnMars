@@ -16,7 +16,7 @@ interface RoverView: MvpView {
     fun setMaxSol(sol: Int)
     fun setMaxDate(text: String)
     fun setTotalPhoto(value: Int)
-    fun initGetPicker(date: Date)
+    fun initGetPicker(date: Date, maxDate: Long, minDate: Long)
     fun setRoverPhotoCuriosity()
     fun setRoverPhotoSpirit()
     fun setRoverPhotoOpportunity()

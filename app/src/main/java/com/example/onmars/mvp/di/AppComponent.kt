@@ -1,11 +1,13 @@
 package com.example.onmars.mvp.di
 
-import com.example.onmars.MainActivity
+import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.mvp.di.modules.*
 import com.example.onmars.mvp.presenter.*
 import com.example.onmars.mvp.ui.adapter.CamerasRVAdapter
+import com.example.onmars.mvp.ui.adapter.FavoritesPhotoRVAdapter
 import com.example.onmars.mvp.ui.adapter.PhotosRVAdapter
 import com.example.onmars.mvp.ui.adapter.RoversRVAdapter
+import com.example.onmars.mvp.ui.fragments.PhotoFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -17,7 +19,8 @@ import javax.inject.Singleton
         CiceroneModule::class,
         RepoModule::class,
         ImageLoaderModule::class,
-        DatabaseModule::class
+        DatabaseModule::class,
+        SaveScrollModule::class,
     ]
 )
 interface AppComponent {
@@ -30,6 +33,12 @@ interface AppComponent {
     fun inject(photosPresenter: PhotosPresenter)
     fun inject(photosRVAdapter: PhotosRVAdapter)
     fun inject(ifEmptyPresenter: IfEmptyPresenter)
+    fun inject(photoPresenter: PhotoPresenter)
+    fun inject(photoFragment: PhotoFragment)
+    fun inject(favoritesPhotosPresenter: FavoritesPhotosPresenter)
+    fun inject(favoritesPhotoRVAdapter: FavoritesPhotoRVAdapter)
+    fun inject(ifEmptyFavoritesPresenter: IfEmptyFavoritesPresenter)
+
 
 
 }

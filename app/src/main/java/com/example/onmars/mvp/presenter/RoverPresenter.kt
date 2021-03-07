@@ -11,13 +11,13 @@ import com.example.onmars.navigation.Screens
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import ru.terrakok.cicerone.Router
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 private const val SPIRIT = "spirit"
 private const val CURIOSITY = "curiosity"
 private const val OPPORTUNITY = "opportunity"
 private const val PERSEVERANCE = "perseverance"
-
 
 class RoverPresenter(
     private val rover: Rover,
@@ -32,6 +32,9 @@ class RoverPresenter(
 
     @Inject
     lateinit var roverData: IRoverData
+
+    private val maxDate = dateToLong(rover.maxDate)
+    private val minDate = dateToLong(rover.landingDate)
 
     class CamerasListPresenter : ICameraListPresenter {
         val cameras = mutableListOf<Camera>()
@@ -54,7 +57,7 @@ class RoverPresenter(
 
         cameraListPresenter.itemClickListener = {
             router.navigateTo(
-                Screens.PhotoScreen(
+                Screens.PhotosScreen(
                     rover,
                     cameraListPresenter.cameras[it.pos],
                     date
@@ -76,7 +79,7 @@ class RoverPresenter(
         viewState.setMaxSol(rover.maxSol ?: 0)
         viewState.setStatus(rover.status ?: "")
         viewState.setTotalPhoto(rover.totalPhotos ?: 0)
-        viewState.initGetPicker(date)
+        viewState.initGetPicker(date, maxDate, minDate)
 
         cameraListPresenter.cameras.clear()
         cameraListPresenter.cameras.addAll(rover.cameras)
@@ -94,7 +97,12 @@ class RoverPresenter(
             CURIOSITY -> viewState.setRoverPhotoCuriosity()
             OPPORTUNITY -> viewState.setRoverPhotoOpportunity()
             PERSEVERANCE -> viewState.setRoverPhotoPerseverance()
-
         }
+    }
+
+    private fun dateToLong(date: String): Long{
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val dateTest = sdf.parse(date)
+        return dateTest.time
     }
 }

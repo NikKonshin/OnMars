@@ -13,10 +13,21 @@ class MainPresenter() : MvpPresenter<MainView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
+        viewState.init()
         router.replaceScreen(Screens.RoversScreen())
     }
 
     fun backClicked() {
         router.exit()
+    }
+
+    fun replaceFragmentToFavorites(): Boolean{
+        router.navigateTo(Screens.FavoritesScreen())
+        return true
+    }
+
+    fun replaceFragmentToRovers(): Boolean{
+        router.replaceScreen(Screens.RoversScreen())
+        return true
     }
 }

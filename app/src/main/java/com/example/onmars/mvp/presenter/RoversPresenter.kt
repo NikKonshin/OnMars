@@ -53,7 +53,6 @@ class RoversPresenter() : MvpPresenter<RoversView>() {
     }
 
     private fun loadData() {
-
         roversRepo.getRovers().observeOn(mainThreadSchedulers)
             .subscribe({ rovers ->
                 roversListPresenter.rovers.clear()

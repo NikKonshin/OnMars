@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onmars.MainActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.R
 import com.example.onmars.mvp.App
 import com.example.onmars.mvp.model.entity.Camera
@@ -25,6 +26,7 @@ class PhotosFragment : MvpAppCompatFragment(), PhotosView, BackButtonListener {
         private const val CAMERA_ARG = "camera"
         private const val ROVER_NAME_ARG = "rover_name"
         private const val DATE_ARG = "date"
+        private const val LAYOUT_MANAGER = "layout_manager"
         fun newInstance(rover: Rover, camera: Camera, date: Date) = PhotosFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(CAMERA_ARG, camera)
@@ -56,15 +58,26 @@ class PhotosFragment : MvpAppCompatFragment(), PhotosView, BackButtonListener {
     override fun init() {
         val activity = activity as MainActivity
         activity.setSupportActionBar(toolbar_photos_fragment)
+
         val bar = activity.supportActionBar
         bar?.setDisplayShowTitleEnabled(false)
         bar?.setDisplayHomeAsUpEnabled(true)
         bar?.setDisplayShowHomeEnabled(true)
+
         rv_rovers_fragments_photos.layoutManager = LinearLayoutManager(context)
         adapter = PhotosRVAdapter(presenter.photosListPresenter).apply {
             App.instance.appComponent.inject(this)
         }
         rv_rovers_fragments_photos.adapter = adapter
+        rv_rovers_fragments_photos.scrollToPosition(presenter.getPosition() ?: 0)
+        rv_rovers_fragments_photos.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val position =
+                    ((rv_rovers_fragments_photos.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition())
+                presenter.saveScroll(position)
+            }
+        })
     }
 
     override fun updateList() {

@@ -5,6 +5,8 @@ import com.example.onmars.mvp.model.entity.Camera
 import com.example.onmars.mvp.model.entity.Photo
 import com.example.onmars.mvp.model.entity.Rover
 import com.example.onmars.mvp.model.entity.date.Date
+import com.example.onmars.mvp.model.entity.favorites.FavoritesPhoto
+import com.example.onmars.mvp.model.entity.scroll.ISaveScroll
 import com.example.onmars.mvp.model.repo.IPhotoRepo
 import com.example.onmars.mvp.presenter.list.IPhotosListPresenter
 import com.example.onmars.mvp.view.PhotosView
@@ -16,6 +18,7 @@ import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 private const val TAG = "PhotosPresenter"
+private const val PHOTOS_FRAGMENT = "photos"
 
 class PhotosPresenter(
     private val rover: Rover,
@@ -31,6 +34,9 @@ class PhotosPresenter(
 
     @Inject
     lateinit var router: Router
+
+    @Inject
+    lateinit var position: ISaveScroll
 
     class PhotosListPresenter : IPhotosListPresenter {
         val photos = mutableListOf<Photo>()
@@ -54,6 +60,19 @@ class PhotosPresenter(
         super.onFirstViewAttach()
         viewState.init()
         loadData()
+        photosListPresenter.itemClickListener = { itemView ->
+            val favoritesPhoto = photosListPresenter.photos[itemView.pos].let {
+                FavoritesPhoto(
+                    it.id,
+                    it.imgSrc,
+                    date.dateString,
+                    it.rover.name,
+                    it.camera.fullName,
+                    false
+                )
+            }
+            router.navigateTo(Screens.PhotoScreen(favoritesPhoto))
+        }
     }
 
     private fun loadData() {
@@ -72,7 +91,15 @@ class PhotosPresenter(
             })
     }
 
+    fun saveScroll(pos: Int) {
+        position.saveScroll(PHOTOS_FRAGMENT, pos)
+    }
+
+    fun getPosition() =
+        position.getPosition(PHOTOS_FRAGMENT)
+
     fun backPressed(): Boolean {
+        router.exit()
         router.backTo(Screens.RoverScreen(rover, date))
         return true
     }
