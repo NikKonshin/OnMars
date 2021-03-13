@@ -8,4 +8,5 @@ import moxy.viewstate.strategy.StateStrategyType
 interface FavoritesPhotoView : MvpView {
     fun init()
     fun updateList()
+    fun release()
 }

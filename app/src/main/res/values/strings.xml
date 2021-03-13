@@ -15,4 +15,6 @@
     <string name="share">Поделиться</string>
     <string name="save">Сохранить</string>
     <string name="empty_tv_if_empty_favorites">Пока что тут нет фото.\\n\\n\\nСначала добавьте фото.</string>
+    <string name="choose_date">Выберите дату:</string>
+    <string name="choose_camera">Для показа фото выберите камеру марсохода:</string>
 </resources>

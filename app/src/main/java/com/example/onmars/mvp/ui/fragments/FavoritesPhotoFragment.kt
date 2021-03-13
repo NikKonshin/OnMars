@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.onmars.R
 import com.example.onmars.mvp.App
+import com.example.onmars.mvp.di.favorites.FavoritesSubComponent
 import com.example.onmars.mvp.presenter.FavoritesPhotosPresenter
 import com.example.onmars.mvp.ui.BackButtonListener
 import com.example.onmars.mvp.ui.adapter.FavoritesPhotoRVAdapter
@@ -18,9 +19,11 @@ import moxy.ktx.moxyPresenter
 
 class FavoritesPhotoFragment : MvpAppCompatFragment(), FavoritesPhotoView, BackButtonListener {
 
+    private var favoritesSubComponent: FavoritesSubComponent? = null
     private val presenter by moxyPresenter {
+        favoritesSubComponent = App.instance.initFavoritesSubComponent()
         FavoritesPhotosPresenter().apply {
-            App.instance.appComponent.inject(this)
+            favoritesSubComponent?.inject(this)
         }
     }
 
@@ -40,7 +43,7 @@ class FavoritesPhotoFragment : MvpAppCompatFragment(), FavoritesPhotoView, BackB
 
     override fun init() {
         adapter = FavoritesPhotoRVAdapter(presenter.favoritesPhotosListPresenter).apply {
-            App.instance.appComponent.inject(this)
+            favoritesSubComponent?.inject(this)
         }
         rv_photos_fragment_favorites_photos.layoutManager = LinearLayoutManager(context)
         rv_photos_fragment_favorites_photos.adapter = adapter
@@ -60,6 +63,11 @@ class FavoritesPhotoFragment : MvpAppCompatFragment(), FavoritesPhotoView, BackB
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun release() {
+        favoritesSubComponent = null
+        App.instance.releaseFavoritesSubComponent()
     }
 
     override fun backPressed(): Boolean =

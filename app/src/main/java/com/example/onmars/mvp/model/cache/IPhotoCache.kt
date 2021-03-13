@@ -1,7 +1,6 @@
 package com.example.onmars.mvp.model.cache
 
 import com.example.onmars.mvp.model.entity.Camera
-import com.example.onmars.mvp.model.entity.Photo
 import com.example.onmars.mvp.model.entity.Photos
 import com.example.onmars.mvp.model.entity.Rover
 import io.reactivex.rxjava3.core.Completable

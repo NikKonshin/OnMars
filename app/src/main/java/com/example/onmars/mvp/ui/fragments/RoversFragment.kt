@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.R
 import com.example.onmars.mvp.App
+import com.example.onmars.mvp.di.rovers.RoversSubComponent
 import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.presenter.RoversPresenter
 import com.example.onmars.mvp.ui.BackButtonListener
+import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.mvp.ui.adapter.RoversRVAdapter
 import com.example.onmars.mvp.view.RoversView
 import kotlinx.android.synthetic.main.fragment_rovers.*
@@ -24,9 +25,12 @@ class RoversFragment : MvpAppCompatFragment(), RoversView, BackButtonListener {
         fun newInstance() = RoversFragment()
     }
 
+    private var roversSubComponent: RoversSubComponent? = null
+
     private val presenter: RoversPresenter by moxyPresenter {
+        roversSubComponent = App.instance.initRoversSubComponent()
         RoversPresenter().apply {
-            App.instance.appComponent.inject(this)
+            roversSubComponent?.inject(this)
         }
     }
     private var adapter: RoversRVAdapter? = null
@@ -44,7 +48,7 @@ class RoversFragment : MvpAppCompatFragment(), RoversView, BackButtonListener {
 
         rv_rovers.layoutManager = LinearLayoutManager(context)
         adapter = RoversRVAdapter(presenter.roversListPresenter).apply {
-            App.instance.appComponent.inject(this)
+            roversSubComponent?.inject(this)
         }
         rv_rovers.adapter = adapter
     }
@@ -64,6 +68,11 @@ class RoversFragment : MvpAppCompatFragment(), RoversView, BackButtonListener {
         date.day = day
         date.dateString = "$year-${month}-$day"
         presenter.setDate(date)
+    }
+
+    override fun release() {
+        roversSubComponent = null
+        App.instance.releaseRoversSubComponent()
     }
 
     override fun backPressed() = presenter.backPressed()

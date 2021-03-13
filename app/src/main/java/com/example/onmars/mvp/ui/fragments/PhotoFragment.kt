@@ -13,6 +13,7 @@ import com.davemorrissey.labs.subscaleview.ImageSource
 import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.R
 import com.example.onmars.mvp.App
+import com.example.onmars.mvp.di.photo.PhotoSubComponent
 import com.example.onmars.mvp.model.entity.favorites.FavoritesPhoto
 import com.example.onmars.mvp.model.image.IImageLoader
 import com.example.onmars.mvp.presenter.PhotoPresenter
@@ -40,14 +41,16 @@ class PhotoFragment : MvpAppCompatFragment(), PhotoView, BackButtonListener {
                     putParcelable(URL_ARG, favoritesPhoto)
                 }
             }.apply {
-                App.instance.appComponent.inject(this)
+                photoSubComponent = App.instance.initPhotoSubComponent()
+                photoSubComponent?.inject(this)
             }
     }
+    private var photoSubComponent: PhotoSubComponent? = null
 
     private val presenter by moxyPresenter {
         val favoritesPhoto = arguments?.getParcelable<FavoritesPhoto>(URL_ARG)
         PhotoPresenter(favoritesPhoto).apply {
-            App.instance.appComponent.inject(this)
+            photoSubComponent?.inject(this)
         }
     }
 
@@ -164,6 +167,11 @@ class PhotoFragment : MvpAppCompatFragment(), PhotoView, BackButtonListener {
 
     override fun showToastError(text: String) {
         Toast.makeText(context, "$text", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun release() {
+        photoSubComponent = null
+        App.instance.releasePhotoSubComponent()
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()

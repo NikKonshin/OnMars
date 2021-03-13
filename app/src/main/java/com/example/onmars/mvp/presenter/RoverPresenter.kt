@@ -100,9 +100,14 @@ class RoverPresenter(
         }
     }
 
-    private fun dateToLong(date: String): Long{
+    private fun dateToLong(date: String): Long {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val dateTest = sdf.parse(date)
         return dateTest.time
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
     }
 }

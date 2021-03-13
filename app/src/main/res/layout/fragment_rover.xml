@@ -56,7 +56,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -208,6 +207,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_max_date_value_rover_fragment" />
 
+            <TextView
+                android:id="@+id/tv_choose_date_rover_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_100"
+                android:textSize="16sp"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginTop="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:text="@string/choose_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_total_photos_rover_fragment"
+                app:layout_constraintBottom_toTopOf="@id/date_picker_rover_fragment"/>
+
             <DatePicker
                 android:id="@+id/date_picker_rover_fragment"
                 android:layout_width="wrap_content"
@@ -216,9 +230,22 @@
                 android:datePickerMode="spinner"
                 android:layout_marginStart="@dimen/standard_margin"
                 android:theme="@style/MyDatePicker"
-                app:layout_constraintBottom_toTopOf="@id/rv_cameras_rover_fragment"
+                app:layout_constraintBottom_toTopOf="@id/tv_choose_camera_rover_fragment"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_total_photos_rover_fragment" />
+                app:layout_constraintTop_toBottomOf="@id/tv_choose_date_rover_fragment" />
+            <TextView
+                android:id="@+id/tv_choose_camera_rover_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/grey_100"
+                android:textSize="16sp"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:text="@string/choose_camera"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/date_picker_rover_fragment"
+                app:layout_constraintBottom_toTopOf="@id/rv_cameras_rover_fragment"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_cameras_rover_fragment"
@@ -230,7 +257,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/date_picker_rover_fragment" />
+                app:layout_constraintTop_toBottomOf="@id/tv_choose_camera_rover_fragment" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.onmars.R
 import com.example.onmars.mvp.App
+import com.example.onmars.mvp.di.favorites.FavoritesSubComponent
 import com.example.onmars.mvp.presenter.IfEmptyFavoritesPresenter
 import com.example.onmars.mvp.ui.BackButtonListener
 import com.example.onmars.mvp.view.IfEmptyFavoritesView
@@ -14,9 +15,11 @@ import moxy.ktx.moxyPresenter
 
 class IfEmptyFavoritesFragment : MvpAppCompatFragment(), IfEmptyFavoritesView, BackButtonListener {
 
+    private var favoritesSubComponent: FavoritesSubComponent? = null
     val presenter by moxyPresenter {
+        favoritesSubComponent = App.instance.initFavoritesSubComponent()
         IfEmptyFavoritesPresenter().apply {
-            App.instance.appComponent.inject(this)
+            favoritesSubComponent?.inject(this)
         }
     }
 

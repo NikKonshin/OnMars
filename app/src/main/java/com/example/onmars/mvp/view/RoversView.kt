@@ -9,4 +9,5 @@ interface RoversView : MvpView {
     fun init()
     fun updateList()
     fun getDate()
+    fun release()
 }

@@ -45,5 +45,4 @@ class ApiModule {
     @Singleton
     @Provides
     fun networkStatus(app: App): INetworkStatus = AndroidNetworkStatus(app)
-
 }
