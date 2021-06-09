@@ -14,4 +14,5 @@ interface PhotoView : MvpView {
     fun startPushActivity(uri: String)
     fun showToastSave()
     fun showToastError(text: String)
+    fun release()
 }

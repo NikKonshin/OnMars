@@ -9,6 +9,7 @@ import android.widget.DatePicker
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.onmars.R
 import com.example.onmars.mvp.App
+import com.example.onmars.mvp.di.rover.RoverSubComponent
 import com.example.onmars.mvp.model.entity.Rover
 import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.presenter.RoverPresenter
@@ -34,11 +35,14 @@ class RoverFragment : MvpAppCompatFragment(), RoverView, BackButtonListener {
         }
     }
 
+    private var roverSubComponent: RoverSubComponent? = null
+
     private val presenter by moxyPresenter {
+        roverSubComponent = App.instance.initRoverSubComponent()
         val rover = arguments?.getParcelable<Rover>(ROVER_ARG) as Rover
         val date = arguments?.getParcelable<Date>(DATE_ARG) as Date
         RoverPresenter(rover, date).apply {
-            App.instance.appComponent.inject(this)
+            roverSubComponent?.inject(this)
         }
     }
 
@@ -59,7 +63,7 @@ class RoverFragment : MvpAppCompatFragment(), RoverView, BackButtonListener {
         bar?.setDisplayShowHomeEnabled(true)
         rv_cameras_rover_fragment.layoutManager = LinearLayoutManager(context)
         adapter = CamerasRVAdapter(presenter.cameraListPresenter).apply {
-            App.instance.appComponent.inject(this)
+            roverSubComponent?.inject(this)
         }
         rv_cameras_rover_fragment.adapter = adapter
     }
@@ -134,6 +138,11 @@ class RoverFragment : MvpAppCompatFragment(), RoverView, BackButtonListener {
 
     override fun setRoverPhotoPerseverance() {
         iv_rover_photo_rover_fragment.setImageResource(R.drawable.rover_perseverance)
+    }
+
+    override fun release() {
+        roverSubComponent = null
+        App.instance.releaseRoverSubComponent()
     }
 
     override fun backPressed(): Boolean = presenter.backPressed()

@@ -7,5 +7,4 @@ interface IListWithFavoritesPresenter<V : IItemView> {
     var favoritesItemClickListener: ((V) -> Unit)?
     fun bindView(view: V)
     fun getCount(): Int
-
 }

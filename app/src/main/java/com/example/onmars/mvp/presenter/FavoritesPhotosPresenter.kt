@@ -128,9 +128,13 @@ class FavoritesPhotosPresenter() : MvpPresenter<FavoritesPhotoView>() {
     fun getPosition() =
         position.getPosition(FAVORITES_FRAGMENT)
 
-    fun backPressed(): Boolean{
-        router.backTo(Screens.RoversScreen())
-//        router.exit()
+    fun backPressed(): Boolean {
+        router.exit()
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
     }
 }

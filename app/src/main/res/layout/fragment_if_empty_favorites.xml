@@ -32,7 +32,6 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <TextView
         android:id="@+id/tv_if_empty_favorites_fragment"
         android:layout_width="wrap_content"

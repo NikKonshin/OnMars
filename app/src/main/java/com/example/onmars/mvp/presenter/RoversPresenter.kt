@@ -63,12 +63,17 @@ class RoversPresenter() : MvpPresenter<RoversView>() {
             })
     }
 
-    fun setDate(newDate: Date){
+    fun setDate(newDate: Date) {
         date = newDate
     }
 
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
     }
 }

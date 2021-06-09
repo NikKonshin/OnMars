@@ -123,4 +123,9 @@ class PhotoPresenter(
     }
 
     val isFavorites = favoritesPhoto?.isFavorites
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
+    }
 }

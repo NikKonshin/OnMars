@@ -21,4 +21,5 @@ interface RoverView: MvpView {
     fun setRoverPhotoSpirit()
     fun setRoverPhotoOpportunity()
     fun setRoverPhotoPerseverance()
+    fun release()
 }

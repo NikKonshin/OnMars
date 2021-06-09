@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.R
 import com.example.onmars.mvp.App
+import com.example.onmars.mvp.di.photos.PhotosSubComponent
 import com.example.onmars.mvp.presenter.IfEmptyPresenter
 import com.example.onmars.mvp.ui.BackButtonListener
 import com.example.onmars.mvp.view.IfEmptyView
@@ -16,9 +17,12 @@ import moxy.ktx.moxyPresenter
 
 class IfEmptyFragment : MvpAppCompatFragment(), IfEmptyView, BackButtonListener {
 
+    private var photosSubComponent: PhotosSubComponent? = null
+
     val presenter by moxyPresenter {
+        photosSubComponent = App.instance.initPhotosSubComponent()
         IfEmptyPresenter().apply {
-            App.instance.appComponent.inject(this)
+            photosSubComponent?.inject(this)
         }
     }
 

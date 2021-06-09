@@ -21,12 +21,12 @@ class MainPresenter() : MvpPresenter<MainView>() {
         router.exit()
     }
 
-    fun replaceFragmentToFavorites(): Boolean{
-        router.navigateTo(Screens.FavoritesScreen())
+    fun replaceFragmentToFavorites(): Boolean {
+        router.replaceScreen(Screens.FavoritesScreen())
         return true
     }
 
-    fun replaceFragmentToRovers(): Boolean{
+    fun replaceFragmentToRovers(): Boolean {
         router.replaceScreen(Screens.RoversScreen())
         return true
     }

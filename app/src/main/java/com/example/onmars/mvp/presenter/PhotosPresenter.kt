@@ -103,4 +103,9 @@ class PhotosPresenter(
         router.backTo(Screens.RoverScreen(rover, date))
         return true
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
+    }
 }
