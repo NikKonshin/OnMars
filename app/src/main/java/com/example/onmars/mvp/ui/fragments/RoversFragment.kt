@@ -11,7 +11,6 @@ import com.example.onmars.mvp.di.rovers.RoversSubComponent
 import com.example.onmars.mvp.model.entity.date.Date
 import com.example.onmars.mvp.presenter.RoversPresenter
 import com.example.onmars.mvp.ui.BackButtonListener
-import com.example.onmars.mvp.ui.MainActivity
 import com.example.onmars.mvp.ui.adapter.RoversRVAdapter
 import com.example.onmars.mvp.view.RoversView
 import kotlinx.android.synthetic.main.fragment_rovers.*
@@ -40,12 +39,7 @@ class RoversFragment : MvpAppCompatFragment(), RoversView, BackButtonListener {
         savedInstanceState: Bundle?
     ) = View.inflate(context, R.layout.fragment_rovers, null)
 
-
     override fun init() {
-        val activity = activity as MainActivity
-        activity.setSupportActionBar(toolbar_rovers_fragment)
-        activity.supportActionBar?.setDisplayShowTitleEnabled(false)
-
         rv_rovers.layoutManager = LinearLayoutManager(context)
         adapter = RoversRVAdapter(presenter.roversListPresenter).apply {
             roversSubComponent?.inject(this)
