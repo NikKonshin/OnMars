@@ -7,6 +7,7 @@ import com.example.onmars.mvp.App
 import com.example.onmars.mvp.presenter.MainPresenter
 import com.example.onmars.mvp.view.MainView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_rovers.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import ru.terrakok.cicerone.NavigatorHolder
@@ -61,7 +62,10 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     override fun init() {
         bnv_main_activity.setOnNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.homeId -> presenter.replaceFragmentToRovers()
+                R.id.homeId -> {
+                    setSupportActionBar(toolbar_rovers_fragment)
+                    supportActionBar?.setDisplayShowTitleEnabled(false)
+                    presenter.replaceFragmentToRovers()}
                 R.id.favoritesId -> presenter.replaceFragmentToFavorites()
                 else -> false
             }
